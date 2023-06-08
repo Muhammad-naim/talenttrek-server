@@ -1,0 +1,113 @@
+[
+    {
+      "name": "Spanish Language Course",
+      "instructor": "Maria Rodriguez",
+      "description": "Learn to speak and understand Spanish fluently.",
+      "imageURL": "https://vidalingua.com/images/spanish-courses",
+      "price": 99.99,
+      "status": "approved",
+      "totalSeat": 30,
+      "students": 25
+    },
+    {
+      "name": "French Language Course",
+      "instructor": "Jean-Luc Dubois",
+      "description": "Master the French language with a native-speaking instructor.",
+      "imageURL": "https://i.pinimg.com/originals/12/11/1a/12111ac74b0cba979d7d42ad0911cf9f.jpg",
+      "price": 119.99,
+      "status": "pending",
+      "totalSeat": 20,
+      "students": 10
+    },
+    {
+      "name": "German Language Course",
+      "instructor": "Hans Müller",
+      "description": "Learn to speak German fluently and understand the culture.",
+      "imageURL": "https://www.studying-in-germany.org/wp-content/uploads/2018/08/learn-german-language-with-online-courses.jpg",
+      "price": 89.99,
+      "status": "approved",
+      "totalSeat": 25,
+      "students": 15
+    },
+    {
+      "name": "Mandarin Chinese Language Course",
+      "instructor": "Li Wei",
+      "description": "Master Mandarin Chinese and explore Chinese traditions.",
+      "imageURL": "https://blog.keatschinese.com/wp-content/uploads/2017/07/Feature-Image-Woman-writing-in-Mandarin.jpg",
+      "price": 109.99,
+      "status": "approved",
+      "totalSeat": 30,
+      "students": 20
+    },
+    {
+      "name": "Italian Language Course",
+      "instructor": "Giovanni Rossi",
+      "description": "Immerse yourself in the beauty of the Italian language and culture.",
+      "imageURL": "https://www.courses.ie/wp-content/uploads/2018/01/shutterstock_331641980.jpg",
+      "price": 94.99,
+      "status": "pending",
+      "totalSeat": 15,
+      "students": 5
+    },
+    {
+      "name": "Spanish for Kids Course",
+      "instructor": "Ana Martínez",
+      "description": "Engage children in learning Spanish through interactive activities and games.",
+      "imageURL": "https://preply.com/wp-content/uploads/2021/02/Spanish-classes-for-kids-820x470.jpg",
+      "price": 59.99,
+      "status": "approved",
+      "totalSeat": 12,
+      "students": 10
+    },
+    {
+      "name": "Business English for Professionals",
+      "instructor": "John Anderson",
+      "description": "Develop your English language skills for professional settings, including presentations, negotiations, and business writing.",
+      "imageURL": "https://www.espressoenglish.net/wp-content/uploads/2021/07/business.png",
+      "price": 109.99,
+      "status": "approved",
+      "totalSeat": 30,
+      "students": 20
+    },
+    {
+      "name": "Japanese for Travelers",
+      "instructor": "Yuki Tanaka",
+      "description": "Learn essential Japanese phrases and cultural tips to navigate your trip to Japan with confidence.",
+      "imageURL": "https://i.ytimg.com/vi/nuDZN8Ftxps/maxresdefault.jpg",
+      "price": 94.99,
+      "status": "pending",
+      "totalSeat": 15,
+      "students": 5
+    },
+    {
+      "name": "German Grammar Fundamentals",
+      "instructor": "Hans Müller",
+      "description": "Master the essential grammar rules of the German language to improve your overall fluency.",
+      "imageURL": "https://cdn.innovativelanguage.com/sns/em/blog/21/Grammar/Grammar_german.png",
+      "price": 79.99,
+      "status": "approved",
+      "totalSeat": 20,
+      "students": 18
+    },
+    {
+      "name": "Chinese Calligraphy Workshop",
+      "instructor": "Li Wei",
+      "description": "Immerse yourself in the art of Chinese calligraphy and learn about its cultural significance.",
+      "imageURL": "https://cdn.heartroomgallery.com/wp-content/uploads/2016/08/23204200/Chinese-Calligraphy-Classes-at-Heartroom.jpg",
+      "price": 59.99,
+      "status": "approved",
+      "totalSeat": 12,
+      "students": 10
+    },
+    {
+      "name": "French Conversation Masterclass",
+      "instructor": "Sophie Martin",
+      "description": "Enhance your French speaking skills through interactive conversations and practical exercises.",
+      "imageURL": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMeYmfBwQrmoDJIcNrVuUV_s5Go5wbzjgHmg&usqp=CAU",
+      "price": 89.99,
+      "status": "approved",
+      "totalSeat": 25,
+      "students": 15
+    }
+  ]
+  
