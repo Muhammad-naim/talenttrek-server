@@ -25,7 +25,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-      await client.connect();
+      // await client.connect();
       const courseCollection = client.db('talendtrekDB').collection('courses');
       const bannerCollection = client.db('talendtrekDB').collection('bannerData');
       const instructorCollection = client.db('talendtrekDB').collection('instructors');

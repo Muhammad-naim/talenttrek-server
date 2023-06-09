@@ -4,62 +4,62 @@
         "imageURL": "https://floridaimmigrant.org/wp-content/uploads/2022/06/Maria-1-1.jpg",
         "courses": 1,
         "courseIDs": ["6481b6c1e3efcff387cde4f3"],
-        "email": "maria.rodriguez@example.com"
+        "email": "rodriguez@gmail.com"
     },
     {
         "name": "Jean-Luc Dubois",
         "imageURL": "https://media.licdn.com/dms/image/D4E03AQFQ-xXPCdBJMA/profile-displayphoto-shrink_800_800/0/1675296161503?e=2147483647&v=beta&t=u7hj8rO1KYK6uMtOtOpbKRKpRus2MekF0iKeW-x8c5M",
         "courses": 1,
         "courseIDs": ["6481b6c1e3efcff387cde4f4"],
-        "email": "jeanluc.dubois@example.com"
+        "email": "j.dubois@gmail.com"
     },
     {
         "name": "Hans Müller",
         "imageURL": "https://www.tu-darmstadt.de/media-einrichtungen/cleancircles/team/scientific_advisory_board/Hans_Mueller-Steinhagen_415x415.jpg",
         "courses": 2,
         "courseIDs": ["6481b6c1e3efcff387cde4f5", "6481b6c1e3efcff387cde4fb"],
-        "email": "hans.muller@example.com"
+        "email": "hans.muller@gmail.com"
     },
     {
         "name": "Li Wei",
         "imageURL": "https://www.itdp.org/wp-content/uploads/2019/05/Li-Wei-e1560796736157.jpg",
         "courses": 2,
         "courseIDs": ["6481b6c1e3efcff387cde4f6", "6481b6c1e3efcff387cde4fc"],
-        "email": "li.wei@example.com"
+        "email": "li.wei@gmail.com"
     },
     {
         "name": "Giovanni Rossi",
         "imageURL": "https://media.licdn.com/dms/image/C5603AQHmJTRS6oQVOw/profile-displayphoto-shrink_800_800/0/1563454893032?e=2147483647&v=beta&t=aawTJzZ7b1uc3ZjUNUhmsITCQ6NsatyyhG-8TtptIjA",
         "courses": 1,
         "courseIDs": ["6481b6c1e3efcff387cde4f7"],
-        "email": "giovanni.rossi@example.com"
+        "email": "rossi@gmail.com"
     },
     {
         "name": "Ana Martínez",
         "imageURL": "https://media.licdn.com/dms/image/C4E03AQFio9lp1lbymw/profile-displayphoto-shrink_800_800/0/1636972317996?e=2147483647&v=beta&t=Bacca9eC2YhteiUT9TJVxl53NHhFitN3UJ3b_48nnMY",
         "courses": 1,
         "courseIDs": ["6481b6c1e3efcff387cde4f8"],
-        "email": "ana.martinez@example.com"
+        "email": "martinez@gmail.com"
     },
     {
         "name": "John Anderson",
         "imageURL": "https://www.caa.com/caaspeakers/partyHeadshot/john-anderson.png",
         "courses": 1,
         "courseIDs": ["6481b6c1e3efcff387cde4f9"],
-        "email": "john.anderson@example.com"
+        "email": "john.anderson@gmail.com"
     },
     {
         "name": "Yuki Tanaka",
         "imageURL": "https://media.licdn.com/dms/image/C4E03AQGy3Gt2cu40yg/profile-displayphoto-shrink_800_800/0/1618392973043?e=2147483647&v=beta&t=RqEa23UkBTvqgU4-XdrctlrUSbmzui2lWMzWXkTPAks",
         "courses": 1,
         "courseIDs": ["6481b6c1e3efcff387cde4fa"],
-        "email": "yuki.tanaka@example.com"
+        "email": "yuki.tanaka@gmail.com"
     },
     {
         "name": "Sophie Martin",
         "imageURL": "https://aspirepublicschools.org/wp-content/uploads/2017/10/Ana-Martinez.png",
         "courses": 1,
         "courseIDs": ["6481b6c1e3efcff387cde4fd"],
-        "email": "sophie.martin@example.com"
+        "email": "sophie.martin@gmail.com"
     }
 ]
