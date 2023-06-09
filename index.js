@@ -28,6 +28,7 @@ async function run() {
       await client.connect();
       const courseCollection = client.db('talendtrekDB').collection('courses');
       const bannerCollection = client.db('talendtrekDB').collection('bannerData');
+      const instructorCollection = client.db('talendtrekDB').collection('instructors');
 
 
 
@@ -36,10 +37,17 @@ async function run() {
           const courses = await cursor.toArray()
         res.send(courses)
     })
-      app.get('/banner', async (req, res) => {
-          const cursor = courseCollection.find()
+      
+    app.get('/banner', async (req, res) => {
+          const cursor = bannerCollection.find()
           const bannerContent = await cursor.toArray()
         res.send(bannerContent)
+    })
+      
+    app.get('/instructors', async (req, res) => {
+          const cursor = instructorCollection.find()
+      const instructors = await cursor.toArray()
+        res.send(instructors)
     })
 
 
