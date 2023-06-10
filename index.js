@@ -26,11 +26,12 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-      // await client.connect();
+      await client.connect();
       const courseCollection = client.db('talendtrekDB').collection('courses');
       const bannerCollection = client.db('talendtrekDB').collection('bannerData');
       const instructorCollection = client.db('talendtrekDB').collection('instructors');
-    const userCollection = client.db('talendtrekDB').collection('users');
+      const userCollection = client.db('talendtrekDB').collection('users');
+      const bookingCollection = client.db('talendtrekDB').collection('bookings');
     
 
 
@@ -46,19 +47,26 @@ async function run() {
         res.send('user already exist')
       }
       const result = await userCollection.insertOne(user);
-      console.log(result);
       res.send(result)
     })
 
     //jwt token generator API  
     app.post('/jwt', async (req, res)=>{
       const body = req.body;
-      console.log(body);
       const token = jwt.sign(body, process.env.SECTER_TOKEN, { expiresIn: '1h' });
       res.send({token})
-      })
+    })
+    
+    app.post('/book-class', async (req, res) => {
+      const course = req.body;
+      const result = await bookingCollection.insertOne(course) 
+      res.send(result)
+    })
 
 
+
+
+    //All get methods are here
       app.get('/courses', async (req, res) => {
           const cursor = courseCollection.find()
           const courses = await cursor.toArray()
