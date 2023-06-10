@@ -14,6 +14,7 @@ app.use(express.json())
 
 
 
+
 const uri = `mongodb+srv://${process.env.talentTrek_admin}:${process.env.talentTrek_password}@cluster0.ilp6hsx.mongodb.net/?retryWrites=true&w=majority`;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -23,6 +24,9 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
+
+
+
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -85,6 +89,16 @@ async function run() {
         res.send(instructors)
     })
 
+    app.get('/my-bookings',  async (req, res) => {
+      const email = req.query.email;
+      if (!email) {
+        res.send([])
+      }
+      
+      const query = { user: email }
+      const result = bookingCollection.find(query).toArray();
+      res.send(result);
+    })
 
 
     // Send a ping to confirm a successful connection
