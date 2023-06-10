@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config()
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = process.env.PORT || 5000;
@@ -29,7 +30,33 @@ async function run() {
       const courseCollection = client.db('talendtrekDB').collection('courses');
       const bannerCollection = client.db('talendtrekDB').collection('bannerData');
       const instructorCollection = client.db('talendtrekDB').collection('instructors');
+    const userCollection = client.db('talendtrekDB').collection('users');
+    
 
+
+
+
+
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      console.log(user);
+      const query = {email: user.email}
+      const existingUser = await userCollection.findOne(query)
+      if (existingUser) {
+        res.send('user already exist')
+      }
+      const result = await userCollection.insertOne(user);
+      console.log(result);
+      res.send(result)
+    })
+
+    //jwt token generator API  
+    app.post('/jwt', async (req, res)=>{
+      const body = req.body;
+      console.log(body);
+      const token = jwt.sign(body, process.env.SECTER_TOKEN, { expiresIn: '1h' });
+      res.send({token})
+      })
 
 
       app.get('/courses', async (req, res) => {
