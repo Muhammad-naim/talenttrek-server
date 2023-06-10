@@ -70,7 +70,4 @@ app.get('/', async (req, res) => {
 
 app.listen(port, () => {
     console.log(`app is running on port ${port}`);
-    console.log(process.env.talentTrek_admin);
-    console.log(process.env.talentTrek_password);
-
 })
