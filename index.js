@@ -120,13 +120,14 @@ async function run() {
     app.post('/payment', verifyJWT, async (req, res) => {
       const payment = req.body;
       console.log(payment);
+      const query = {_id : new ObjectId(payment.bookingID)}
       const result = await paymentCollection.insertOne(payment);
       if (result.insertedId)
       {
         const filter = {_id: new ObjectId(payment.courseID)}
-        const updatedCourse = await courseCollection.updateOne(filter, { $inc: { students: 1} } )
+        const updatedCourse = await courseCollection.updateOne(filter, { $inc: { students: 1 } })
+        const deleteBooking = await bookingCollection.deleteOne(query)
       }
-      console.log(result);
       res.send(result)
 
     })
