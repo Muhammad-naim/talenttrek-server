@@ -23,13 +23,14 @@ const verifyJWT = (req, res, next) => {
   const token = authorization.split(' ')[1];
   jwt.verify(token, process.env.SECTER_TOKEN, (err, decoded) => {
     if (err) {
-      return res.status(401).send({error: true, message: 'unauthorized access'})
+      return res.status(401).send({ error: true, message: 'unauthorized access' })
     }
     req.decoded = decoded;
     next()
   })
-  
+
 }
+
 
 
 const uri = `mongodb+srv://${process.env.talentTrek_admin}:${process.env.talentTrek_password}@cluster0.ilp6hsx.mongodb.net/?retryWrites=true&w=majority`;
@@ -47,14 +48,14 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-      await client.connect();
-      const courseCollection = client.db('talendtrekDB').collection('courses');
-      const bannerCollection = client.db('talendtrekDB').collection('bannerData');
-      const instructorCollection = client.db('talendtrekDB').collection('instructors');
-      const userCollection = client.db('talendtrekDB').collection('users');
-      const bookingCollection = client.db('talendtrekDB').collection('bookings'); 
-      const paymentCollection = client.db('talendtrekDB').collection('payments'); 
-    
+    await client.connect();
+    const courseCollection = client.db('talendtrekDB').collection('courses');
+    const bannerCollection = client.db('talendtrekDB').collection('bannerData');
+    const instructorCollection = client.db('talendtrekDB').collection('instructors');
+    const userCollection = client.db('talendtrekDB').collection('users');
+    const bookingCollection = client.db('talendtrekDB').collection('bookings');
+    const paymentCollection = client.db('talendtrekDB').collection('payments');
+
 
 
 
@@ -63,7 +64,7 @@ async function run() {
     app.post('/users', async (req, res) => {
       const user = req.body;
       console.log(user);
-      const query = {email: user.email}
+      const query = { email: user.email }
       const existingUser = await userCollection.findOne(query)
       if (existingUser) {
         res.send('user already exist')
@@ -73,15 +74,15 @@ async function run() {
     })
 
     //jwt token generator API  
-    app.post('/jwt', async (req, res)=>{
+    app.post('/jwt', async (req, res) => {
       const body = req.body;
       const token = jwt.sign(body, process.env.SECTER_TOKEN, { expiresIn: '1h' });
-      res.send({token})
+      res.send({ token })
     })
-    
+
     app.post('/book-class', async (req, res) => {
       const course = req.body;
-      const result = await bookingCollection.insertOne(course) 
+      const result = await bookingCollection.insertOne(course)
       res.send(result)
     })
 
@@ -93,37 +94,51 @@ async function run() {
         currency: 'usd',
         payment_method_types: ["card"]
       })
-      res.send({ clientSecret: paymentIntent.client_secret,})
+      res.send({ clientSecret: paymentIntent.client_secret, })
     })
 
-    
+    app.post('/payment', verifyJWT, async (req, res) => {
+      const payment = req.body;
+      console.log(payment);
+      const result = await paymentCollection.insertOne(payment);
+      if (result.insertedId)
+      {
+        const filter = {_id: new ObjectId(payment.courseID)}
+        const updatedCourse = await courseCollection.updateOne(filter, { $inc: { students: 1} } )
+        console.log(updatedCourse)
+      }
+      console.log(result);
+      res.send(result)
+
+    })
+
     //delete apis
 
     app.delete('/bookings/:id', async (req, res) => {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)}
+      const query = { _id: new ObjectId(id) }
       const result = await bookingCollection.deleteOne(query)
       res.send(result)
     })
 
 
     //All get methods are here
-      app.get('/courses', async (req, res) => {
-          const cursor = courseCollection.find()
-          const courses = await cursor.toArray()
-        res.send(courses)
+    app.get('/courses', async (req, res) => {
+      const cursor = courseCollection.find()
+      const courses = await cursor.toArray()
+      res.send(courses)
     })
-      
+
     app.get('/banner', async (req, res) => {
-          const cursor = bannerCollection.find()
-          const bannerContent = await cursor.toArray()
-        res.send(bannerContent)
+      const cursor = bannerCollection.find()
+      const bannerContent = await cursor.toArray()
+      res.send(bannerContent)
     })
-      
+
     app.get('/instructors', async (req, res) => {
-          const cursor = instructorCollection.find()
+      const cursor = instructorCollection.find()
       const instructors = await cursor.toArray()
-        res.send(instructors)
+      res.send(instructors)
     })
 
     app.get('/my-bookings', verifyJWT, async (req, res) => {
@@ -134,7 +149,7 @@ async function run() {
       }
       const decodedEmail = req.decoded.email;
       if (email !== decodedEmail) {
-        return res.status(403).send({error: true, message: "forbidden access"})
+        return res.status(403).send({ error: true, message: "forbidden access" })
       }
       const query = { user: email }
       const result = await bookingCollection.find(query).toArray();
@@ -154,10 +169,10 @@ run().catch(console.dir);
 
 
 app.get('/', async (req, res) => {
-    res.send('server is running')
+  res.send('server is running')
 })
 
 
 app.listen(port, () => {
-    console.log(`app is running on port ${port}`);
+  console.log(`app is running on port ${port}`);
 })
