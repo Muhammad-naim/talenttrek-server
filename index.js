@@ -100,8 +100,13 @@ async function run() {
       res.send({ token })
     })
 
-    app.post('/book-class', async (req, res) => {
+    app.post('/book-class',verifyJWT, async (req, res) => {
       const course = req.body;
+      const query = {user: course.user, courseID: course.courseID }
+      const booked = await bookingCollection.findOne(query)
+      if (booked) {
+        return res.send({isExist: true, message: "already added"})
+      }
       const result = await bookingCollection.insertOne(course)
       res.send(result)
     })
