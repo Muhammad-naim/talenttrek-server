@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = process.env.PORT || 5000;
+const stripe = require("stripe")(process.env.PAYMENT_SECRET_KEY)
 const courses = require('./data/courses.json');
 const bannerContent = require('./data/bannerContent.json');
 
@@ -51,7 +52,8 @@ async function run() {
       const bannerCollection = client.db('talendtrekDB').collection('bannerData');
       const instructorCollection = client.db('talendtrekDB').collection('instructors');
       const userCollection = client.db('talendtrekDB').collection('users');
-      const bookingCollection = client.db('talendtrekDB').collection('bookings');
+      const bookingCollection = client.db('talendtrekDB').collection('bookings'); 
+      const paymentCollection = client.db('talendtrekDB').collection('payments'); 
     
 
 
@@ -83,7 +85,18 @@ async function run() {
       res.send(result)
     })
 
+    app.post("/create-payment-intent", verifyJWT, async (req, res) => {
+      const { price } = req.body
+      const amount = price * 100
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: 'usd',
+        payment_method_types: ["card"]
+      })
+      res.send({ clientSecret: paymentIntent.client_secret,})
+    })
 
+    
     //delete apis
 
     app.delete('/bookings/:id', async (req, res) => {
