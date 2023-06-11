@@ -31,7 +31,27 @@ const verifyJWT = (req, res, next) => {
 
 }
 
+//verify admin
+const verifyAdmin = async (req, res, next) => {
+  const email = req.decoded.email;
+  const query = { email: email }
+  const user = await userCollection.findOne(query);
+  if (user?.role !== 'admin') {
+    return res.status(403).send({ error: true, message: 'forbidden access' });
+  }
+  next();
+}
 
+//verify instructor
+const verifyInstructor = async (req, res, next) => {
+  const email = req.decoded.email;
+  const query = { email: email }
+  const user = await userCollection.findOne(query);
+  if (user?.role !== 'instructor') {
+    return res.status(403).send({ error: true, message: 'forbidden access' });
+  }
+  next();
+}
 
 const uri = `mongodb+srv://${process.env.talentTrek_admin}:${process.env.talentTrek_password}@cluster0.ilp6hsx.mongodb.net/?retryWrites=true&w=majority`;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -105,7 +125,6 @@ async function run() {
       {
         const filter = {_id: new ObjectId(payment.courseID)}
         const updatedCourse = await courseCollection.updateOne(filter, { $inc: { students: 1} } )
-        console.log(updatedCourse)
       }
       console.log(result);
       res.send(result)
@@ -154,6 +173,17 @@ async function run() {
       const query = { user: email }
       const result = await bookingCollection.find(query).toArray();
       res.send(result)
+    })
+
+    app.get('/enrolled-classes/:email',verifyJWT, async (req, res) => {
+      const email = req.params.email;
+      if (email !== req.decoded.email) {
+        return res.status(403).send({error: true, message: "Forbidden  access"})
+      }
+      const query = { email: email }
+      const result = await paymentCollection.find(query).toArray()
+      res.send(result)
+
     })
 
 
