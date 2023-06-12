@@ -97,7 +97,9 @@ async function run() {
     app.post('/jwt', async (req, res) => {
       const body = req.body;
       const token = jwt.sign(body, process.env.SECTER_TOKEN, { expiresIn: '1h' });
-      res.send({ token })
+      const query = { email: body.email }
+      const role = await userCollection.findOne(query)
+      res.send({ token, role })
     })
 
     app.post('/book-class',verifyJWT, async (req, res) => {
@@ -187,9 +189,20 @@ async function run() {
         return res.status(403).send({error: true, message: "Forbidden  access"})
       }
       const query = { email: email }
-      const result = await paymentCollection.find(query).toArray()
+      const sort = {date: -1}
+      const result = await paymentCollection.find(query).sort(sort).toArray()
       res.send(result)
+    })
 
+    app.get('/payment-history/:email',verifyJWT, async (req, res) => {
+      const email = req.params.email
+      if (email !== req.decoded.email) {
+        return res.status(403).send({error: true, message: "Forbidden  access"})
+      }
+      const query = { email: email }
+      const sort = {date: -1}
+      const result = await paymentCollection.find(query).sort(sort).toArray()
+      res.send(result)
     })
 
 
