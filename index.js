@@ -144,7 +144,7 @@ async function run() {
 
 
     //patch apis
-    app.patch('/update-class', async (req, res) => {
+    app.patch('/update-class',verifyJWT, verifyInstructor, async (req, res) => {
       const updatedClass = req.body;
       const id = updatedClass.courseID;
       delete updatedClass.courseID;
