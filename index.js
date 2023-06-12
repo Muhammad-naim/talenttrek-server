@@ -138,11 +138,27 @@ async function run() {
 
     app.post('/add-class', verifyJWT, verifyInstructor, async (req, res) => {
       const classData = req.body;
-      console.log(classData);
       const result = await courseCollection.insertOne(classData)
       res.send(result)
     })
 
+
+    //patch apis
+    app.patch('/update-class', async (req, res) => {
+      const updatedClass = req.body;
+      const id = updatedClass.courseID;
+      delete updatedClass.courseID;
+      const filter = {_id: new ObjectId(id)}
+      const updateDoc = {
+        $set: {
+          ...updatedClass
+        },
+      };
+      const result = await courseCollection.updateOne(filter, updateDoc)
+      console.log(result);
+      res.send(result)
+    })
+    
     //delete apis
 
     app.delete('/bookings/:id', async (req, res) => {
@@ -155,7 +171,8 @@ async function run() {
 
     //All get methods are here
     app.get('/courses', async (req, res) => {
-      const cursor = courseCollection.find()
+      const query = {status: "approved"}
+      const cursor = courseCollection.find(query)
       const courses = await cursor.toArray()
       res.send(courses)
     })
@@ -208,6 +225,12 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/instructor-classes/:email',verifyJWT,verifyInstructor, async (req, res) => {
+      const email = req.params.email;
+      const query = {email: email}
+      const classes = await courseCollection.find(query).toArray()
+      res.send(classes)
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
