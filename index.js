@@ -31,27 +31,7 @@ const verifyJWT = (req, res, next) => {
 
 }
 
-//verify admin
-const verifyAdmin = async (req, res, next) => {
-  const email = req.decoded.email;
-  const query = { email: email }
-  const user = await userCollection.findOne(query);
-  if (user?.role !== 'admin') {
-    return res.status(403).send({ error: true, message: 'forbidden access' });
-  }
-  next();
-}
 
-//verify instructor
-const verifyInstructor = async (req, res, next) => {
-  const email = req.decoded.email;
-  const query = { email: email }
-  const user = await userCollection.findOne(query);
-  if (user?.role !== 'instructor') {
-    return res.status(403).send({ error: true, message: 'forbidden access' });
-  }
-  next();
-}
 
 const uri = `mongodb+srv://${process.env.talentTrek_admin}:${process.env.talentTrek_password}@cluster0.ilp6hsx.mongodb.net/?retryWrites=true&w=majority`;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -77,13 +57,32 @@ async function run() {
     const paymentCollection = client.db('talendtrekDB').collection('payments');
 
 
+    //verify admin
+    const verifyAdmin = async (req, res, next) => {
+      const email = req.decoded.email;
+      const query = { email: email }
+      const user = await userCollection.findOne(query);
+      if (user?.role !== 'admin') {
+        return res.status(403).send({ error: true, message: 'forbidden access' });
+      }
+      next();
+    }
 
+    //verify instructor
+    const verifyInstructor = async (req, res, next) => {
+      const email = req.decoded.email;
+      const query = { email: email }
+      const user = await userCollection.findOne(query);
+      if (user?.role !== 'instructor') {
+        return res.status(403).send({ error: true, message: 'forbidden access' });
+      }
+      next();
+    }
 
 
 
     app.post('/users', async (req, res) => {
       const user = req.body;
-      console.log(user);
       const query = { email: user.email }
       const existingUser = await userCollection.findOne(query)
       if (existingUser) {
@@ -102,12 +101,12 @@ async function run() {
       res.send({ token, role })
     })
 
-    app.post('/book-class',verifyJWT, async (req, res) => {
+    app.post('/book-class', verifyJWT, async (req, res) => {
       const course = req.body;
-      const query = {user: course.user, courseID: course.courseID }
+      const query = { user: course.user, courseID: course.courseID }
       const booked = await bookingCollection.findOne(query)
       if (booked) {
-        return res.send({isExist: true, message: "already added"})
+        return res.send({ isExist: true, message: "already added" })
       }
       const result = await bookingCollection.insertOne(course)
       res.send(result)
@@ -126,17 +125,22 @@ async function run() {
 
     app.post('/payment', verifyJWT, async (req, res) => {
       const payment = req.body;
-      console.log(payment);
-      const query = {_id : new ObjectId(payment.bookingID)}
+      const query = { _id: new ObjectId(payment.bookingID) }
       const result = await paymentCollection.insertOne(payment);
-      if (result.insertedId)
-      {
-        const filter = {_id: new ObjectId(payment.courseID)}
+      if (result.insertedId) {
+        const filter = { _id: new ObjectId(payment.courseID) }
         const updatedCourse = await courseCollection.updateOne(filter, { $inc: { students: 1 } })
         const deleteBooking = await bookingCollection.deleteOne(query)
       }
       res.send(result)
 
+    })
+
+    app.post('/add-class', verifyJWT, verifyInstructor, async (req, res) => {
+      const classData = req.body;
+      console.log(classData);
+      const result = await courseCollection.insertOne(classData)
+      res.send(result)
     })
 
     //delete apis
@@ -171,7 +175,6 @@ async function run() {
     app.get('/my-bookings', verifyJWT, async (req, res) => {
       const email = req.query.email;
       if (!email) {
-        console.log("not found");
         return res.send([])
       }
       const decodedEmail = req.decoded.email;
@@ -183,24 +186,24 @@ async function run() {
       res.send(result)
     })
 
-    app.get('/enrolled-classes/:email',verifyJWT, async (req, res) => {
+    app.get('/enrolled-classes/:email', verifyJWT, async (req, res) => {
       const email = req.params.email;
       if (email !== req.decoded.email) {
-        return res.status(403).send({error: true, message: "Forbidden  access"})
+        return res.status(403).send({ error: true, message: "Forbidden  access" })
       }
       const query = { email: email }
-      const sort = {date: -1}
+      const sort = { date: -1 }
       const result = await paymentCollection.find(query).sort(sort).toArray()
       res.send(result)
     })
 
-    app.get('/payment-history/:email',verifyJWT, async (req, res) => {
+    app.get('/payment-history/:email', verifyJWT, async (req, res) => {
       const email = req.params.email
       if (email !== req.decoded.email) {
-        return res.status(403).send({error: true, message: "Forbidden  access"})
+        return res.status(403).send({ error: true, message: "Forbidden  access" })
       }
       const query = { email: email }
-      const sort = {date: -1}
+      const sort = { date: -1 }
       const result = await paymentCollection.find(query).sort(sort).toArray()
       res.send(result)
     })
