@@ -46,7 +46,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+    await client.connect();
     const courseCollection = client.db('talendtrekDB').collection('courses');
     const bannerCollection = client.db('talendtrekDB').collection('bannerData');
     const instructorCollection = client.db('talendtrekDB').collection('instructors');
@@ -219,6 +219,7 @@ async function run() {
       const courses = await cursor.toArray()
       res.send(courses)
     })
+
     app.get('/courses', async (req, res) => {
       const query = {status: "approved"}
       const cursor = courseCollection.find(query)
@@ -297,7 +298,7 @@ async function run() {
     app.get('/users/instructor/:email', verifyJWT, async (req, res) => {
       const email = req.params.email;
       if (req.decoded.email !== email) {
-        res.send({ instructor: false })
+       return res.send({ instructor: false })
       }
       const query = { email: email }
       const user = await userCollection.findOne(query);
