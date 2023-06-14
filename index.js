@@ -31,8 +31,6 @@ const verifyJWT = (req, res, next) => {
 
 }
 
-
-
 const uri = `mongodb+srv://${process.env.talentTrek_admin}:${process.env.talentTrek_password}@cluster0.ilp6hsx.mongodb.net/?retryWrites=true&w=majority`;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -155,9 +153,48 @@ async function run() {
         },
       };
       const result = await courseCollection.updateOne(filter, updateDoc)
-      console.log(result);
       res.send(result)
     })
+
+    app.patch('/feedback',verifyJWT, verifyAdmin, async (req, res) => {
+      const {feedback, id} = req.body
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          feedback: feedback
+        },
+      };
+      const result = await courseCollection.updateOne(filter, updateDoc, options);
+      res.send(result)
+    })
+
+    app.patch('/update-status',verifyJWT, verifyAdmin, async (req, res) => {
+      const { status, id } = req.body;
+      const filter = { _id: new ObjectId(id)}
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          status: status
+        },
+      };
+      const result = await courseCollection.updateOne(filter, updateDoc, options);
+      res.send(result)
+    })
+    
+    app.patch('/update-role', verifyJWT, verifyAdmin, async (req, res) => {
+      const { role, id } = req.body;
+      const filter = { _id: new ObjectId(id)}
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          role: role
+        },
+      };
+      const result = await userCollection.updateOne(filter, updateDoc, options);
+      res.send(result)
+    })
+
     
     //delete apis
 
@@ -167,9 +204,20 @@ async function run() {
       const result = await bookingCollection.deleteOne(query)
       res.send(result)
     })
+    app.delete('/instructor/class/:id',verifyJWT,verifyInstructor, async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const result = await courseCollection.deleteOne(query)
+      res.send(result)
+    })
 
 
     //All get methods are here
+    app.get('/all-courses',verifyJWT, async (req, res) => {
+      const cursor = courseCollection.find()
+      const courses = await cursor.toArray()
+      res.send(courses)
+    })
     app.get('/courses', async (req, res) => {
       const query = {status: "approved"}
       const cursor = courseCollection.find(query)
@@ -254,6 +302,11 @@ async function run() {
       const user = await userCollection.findOne(query);
       const result = { instructor: user?.role === 'instructor' }
       res.send(result);
+    })
+
+    app.get('/users',verifyJWT, verifyAdmin, async (req, res) => {
+      const result = await userCollection.find().toArray()
+      res.send(result)
     })
     
 
